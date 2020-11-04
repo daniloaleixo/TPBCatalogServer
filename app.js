@@ -2,7 +2,7 @@ require('dotenv').config();
 const puppeteer = require('puppeteer');
 
 
-if (!process.env.BASE_URL) throw 'BASE_URL not configured' 
+if (!process.env.BASE_URL) throw 'BASE_URL not configured'
 const baseUrl = process.env.BASE_URL
 const userAgent = (process.env.userAgent || 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
 
@@ -43,8 +43,8 @@ async function launchBrowser() {
 }
 
 function delay(time) {
-  return new Promise(function(resolve) { 
-      setTimeout(resolve, time)
+  return new Promise(function (resolve) {
+    setTimeout(resolve, time)
   });
 }
 
@@ -62,12 +62,21 @@ async function queryMovie(page, movie) {
   console.log("Query movie: ", movie)
 
   await page.goto(baseUrl + 'search?q=' + movie);
-  await page.screenshot({path: 'example1.png'});
-  
+  await page.screenshot({ path: 'example1.png' });
+
+  let bodyHTML = await page.evaluate(() => document.body.innerHTML);
+
   //  Close pop up
-  if (!bodyHTML.match(/No thanks/g)) {
-    await page.click('.close-btn')
-  }
+  // if (!bodyHTML.match(/No thanks/g)) {
+  //   await page.click('.close-btn')
+  // }
+
+  const result = await page.evaluate(() => {
+    return document.querySelector('#searchResult')
+  })
+
+  console.log(result)
+
 }
 
 async function main() {
