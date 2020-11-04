@@ -1,14 +1,8 @@
 require('dotenv').config()
 const fetch = require('node-fetch')
 const cheerio = require('cheerio')
-
-
-async function shutDown() {
-  console.log("\n👋Bye Bye👋")
-  run = false
-  process.exit()
-}
-
+const http = require('http');
+const express = require("express");
 
 
 
@@ -36,7 +30,7 @@ async function queryMovie(movie) {
 
 async function getMovies(movie) {
   return new Promise((res, rej) => {
-    fetch("https://tpb.party/search/" + movie, {
+    fetch(process.env.BASE_URL + movie, {
       "headers": {
         "upgrade-insecure-requests": "1",
       },
@@ -57,21 +51,27 @@ async function getMovies(movie) {
   })
 }
 
-async function main() {
-  console.clear()
-  console.log("=========================")
-  const x = await queryMovie('tenet')
-  console.log(x)
-}
+
+
+
+
+const hostname = process.env.HOST
+const port = process.env.PORT;
+
+const app = express();
+const server = http.createServer(app)
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+
+
+app.get("/movies", async function(req, res) {
+  const result = await queryMovie(req.query.q)
+  res.send(result)
+});
 
 
 
 
 
-
-
-
-main()
-
-process.on("SIGINT", shutDown)
-process.on("SIGTERM", shutDown)
