@@ -1,52 +1,6 @@
 require('dotenv').config();
-const puppeteer = require('puppeteer');
+const fetch = require('node-fetch')
 
-
-if (!process.env.BASE_URL) throw 'BASE_URL not configured'
-const baseUrl = process.env.BASE_URL
-const userAgent = (process.env.userAgent || 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36');
-
-const showBrowser = true; // false state equ headless mode;
-
-
-var browserConfig = {
-  headless: !showBrowser,
-  args: [
-    '--disable-dev-shm-usage',
-    '--disable-accelerated-2d-canvas',
-    '--no-first-run',
-    '--no-zygote',
-    '--disable-gpu',
-    '--no-sandbox',
-    '--disable-setuid-sandbox'
-  ]
-};
-
-
-async function launchBrowser() {
-  console.log("=========================");
-  console.log('📱 Launching browser...');
-  const browser = await puppeteer.launch(browserConfig);
-  const page = await browser.newPage();
-
-  console.log('🔧 Setting User-Agent...');
-  await page.setUserAgent(userAgent); //Set userAgent
-
-  console.log('⏰ Setting timeouts...');
-  await page.setDefaultNavigationTimeout(process.env.timeout || 0);
-  await page.setDefaultTimeout(process.env.timeout || 0);
-
-  return {
-    browser,
-    page
-  };
-}
-
-function delay(time) {
-  return new Promise(function (resolve) {
-    setTimeout(resolve, time)
-  });
-}
 
 async function shutDown() {
   console.log("\n👋Bye Bye👋");
@@ -58,42 +12,40 @@ async function shutDown() {
 
 
 
-async function queryMovie(page, movie) {
-  console.log("Query movie: ", movie)
+async function queryMovie(movie) {
+  const data = await getMovies(movie)
+  console.log(data)
 
-  await page.goto(baseUrl + 'search?q=' + movie);
-  await page.screenshot({ path: 'example1.png' });
+  
+}
 
-  let bodyHTML = await page.evaluate(() => document.body.innerHTML);
-
-  //  Close pop up
-  // if (!bodyHTML.match(/No thanks/g)) {
-  //   await page.click('.close-btn')
-  // }
-
-  const result = await page.evaluate(() => {
-    return document.querySelector('#searchResult')
+async function getMovies(movie) {
+  return new Promise((res, rej) => {
+    fetch("https://tpb.party/search/" + movie, {
+      "headers": {
+        "upgrade-insecure-requests": "1",
+      },
+      "referrer": "https://www.pirate-bay.net/",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "body": null,
+      "method": "GET",
+      "mode": "cors",
+      "credentials": "omit"
+    })
+      .then(res => {
+        return res.text();
+      })
+      .then(data => {
+        res(data)
+      })
+      .catch(err => rej(err))
   })
-
-  console.log(result)
-
 }
 
 async function main() {
   console.clear();
   console.log("=========================");
-  // cookie = await readLoginData();
-  var { browser, page } = await launchBrowser();
-
-
-  console.log('>> Browser ready')
-
-  console.log('Navigating to home page...')
-  await page.goto(baseUrl, {
-    "waitUntil": "networkidle0"
-  });
-
-  await queryMovie(page, 'tenet')
+  await queryMovie('tenet')
 };
 
 
