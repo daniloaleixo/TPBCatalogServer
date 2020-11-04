@@ -42,6 +42,11 @@ async function launchBrowser() {
   };
 }
 
+function delay(time) {
+  return new Promise(function(resolve) { 
+      setTimeout(resolve, time)
+  });
+}
 
 async function shutDown() {
   console.log("\n👋Bye Bye👋");
@@ -49,6 +54,21 @@ async function shutDown() {
   process.exit();
 }
 
+
+
+
+
+async function queryMovie(page, movie) {
+  console.log("Query movie: ", movie)
+
+  await page.goto(baseUrl + 'search?q=' + movie);
+  await page.screenshot({path: 'example1.png'});
+  
+  //  Close pop up
+  if (!bodyHTML.match(/No thanks/g)) {
+    await page.click('.close-btn')
+  }
+}
 
 async function main() {
   console.clear();
@@ -63,6 +83,8 @@ async function main() {
   await page.goto(baseUrl, {
     "waitUntil": "networkidle0"
   });
+
+  await queryMovie(page, 'tenet')
 };
 
 
