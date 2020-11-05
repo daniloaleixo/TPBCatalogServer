@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -63,11 +63,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar() {
+
+export default function SearchAppBar(props) {
   const classes = useStyles();
+  const [name, setName] = useState("");
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    alert(`Submitting Name ${name}`)
+  }
 
   return (
-    <div className={classes.root}>
+    <form onSubmit={handleSubmit} className={classes.root}>
       <AppBar position="static">
         <Toolbar>
           <Typography className={classes.title} variant="h6" noWrap>
@@ -84,10 +91,16 @@ export default function SearchAppBar() {
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
+              type="text"
+              value={name}
+              onChange={e => setName(e.target.value)}
             />
+
+            {/* Hidden submit button */}
+            <input style={{ 'display': 'none' }} type="submit" value="Submit" />
           </div>
         </Toolbar>
       </AppBar>
-    </div>
+    </form>
   );
 }
