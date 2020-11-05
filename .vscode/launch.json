@@ -11,7 +11,7 @@
           "runtimeExecutable": "node",
           "runtimeArgs": ["--inspect", "--trace-warnings"],
           "console": "integratedTerminal",
-          "program": "${workspaceFolder}/app.js"
+          "program": "${workspaceFolder}/server.js"
       }
   ]
 }
