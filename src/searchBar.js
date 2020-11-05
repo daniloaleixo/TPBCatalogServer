@@ -70,7 +70,27 @@ export default function SearchAppBar(props) {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    alert(`Submitting Name ${name}`)
+    fetch("http://localhost:3000/movies?q=" + name)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          // this.setState({
+          //   isLoaded: true,
+          //   items: result.items
+          // });
+          console.log(result)
+        },
+        // Nota: É importante lidar com os erros aqui
+        // em vez de um bloco catch() para não recebermos
+        // exceções de erros dos componentes.
+        (error) => {
+          // this.setState({
+          //   isLoaded: true,
+          //   error
+          // });
+          console.log(error)
+        }
+      )
   }
 
   return (
