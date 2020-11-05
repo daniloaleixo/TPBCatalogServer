@@ -70,7 +70,7 @@ export default function SearchAppBar(props) {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    fetch("http://localhost:3000/movies?q=" + name)
+    fetch(window.location.href + "movies?q=" + name)
       .then(res => res.json())
       .then(
         (result) => {
