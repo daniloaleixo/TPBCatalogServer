@@ -1,5 +1,6 @@
 require('dotenv').config()
 const fetch = require('node-fetch')
+const path = require('path')
 const cheerio = require('cheerio')
 const http = require('http');
 const express = require("express");
@@ -64,12 +65,12 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+app.use(express.static("dist"));
 const server = http.createServer(app)
 
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
-
 
 app.get("/movies", async function (req, res) {
   const result = await queryMovie(req.query.q)
