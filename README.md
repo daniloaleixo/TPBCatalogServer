@@ -10,5 +10,9 @@ npm install
 
 ## Running
 ```
+# Configure .env
+cp .env.example .env
+
+# Build and run the server
 npm run build && npm run serve
 ```
