@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
+import SearchAppBar from './searchBar'
 
 function App() {
     return (
         <div>
-            Hello World!
-            <Button color="primary">Hello World</Button>
+            <SearchAppBar ></SearchAppBar>
         </div>
     );
 }
