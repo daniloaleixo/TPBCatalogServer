@@ -74,11 +74,7 @@ export default function SearchAppBar(props) {
       .then(res => res.json())
       .then(
         (result) => {
-          // this.setState({
-          //   isLoaded: true,
-          //   items: result.items
-          // });
-          console.log(result)
+          props.onMovieChange(result);
         },
         // Nota: É importante lidar com os erros aqui
         // em vez de um bloco catch() para não recebermos
