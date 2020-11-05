@@ -1,5 +1,6 @@
 import React from 'react';
 import SearchAppBar from './searchBar'
+import MyList from './list'
 
 
 class App extends React.Component {
@@ -19,6 +20,7 @@ class App extends React.Component {
         return (
             <div>
                 <SearchAppBar onMovieChange={this.movieChange.bind(this)} ></SearchAppBar>
+                <MyList list={this.state.list}></MyList>
             </div>
         );
     }
