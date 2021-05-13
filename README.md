@@ -1,5 +1,7 @@
 # TPBCatalogServer
 
+[![DeepSource](https://deepsource.io/gh/daniloaleixo/TPBCatalogServer.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/daniloaleixo/TPBCatalogServer/?ref=repository-badge)
+
 Simple server to search piratebay and click magnet link directly, without having to access TPB
 
 
